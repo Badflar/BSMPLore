@@ -71,6 +71,8 @@ public class Main extends JavaPlugin implements Listener {
 				}
 			}
 		}, 0L, 0L);
+		
+		barrCooldown = (System.currentTimeMillis() / 1000);
 	}
 	
 	@Override
@@ -145,10 +147,9 @@ public class Main extends JavaPlugin implements Listener {
 			Player p = e.getPlayer();
 			Player Barr = Bukkit.getPlayer("Barrboat");
 			if (p.getInventory().getItemInMainHand().getType().equals(Material.BLAZE_ROD) && p == Barr) {
-				if (barrCooldown + 7 >= System.currentTimeMillis() / 1000) {
-					Block b = p.getTargetBlock((Set<Material>)null, 20);
+				if ((System.currentTimeMillis() / 1000) - barrCooldown > 7) {
+					Block b = p.getTargetBlock((Set<Material>) null, 20);
 					p.setHealth(p.getHealth() - 5);
-					p.getWorld().spawnParticle(Particle.CRIT_MAGIC, p.getLocation(), 8, 0.3F, 0.2F, 0.3F);
 					p.teleport(b.getLocation().add(0, 1, 0).setDirection(p.getLocation().getDirection()));
 					barrCooldown = System.currentTimeMillis() / 1000;
 				}
@@ -309,10 +310,8 @@ public class Main extends JavaPlugin implements Listener {
 		Player Smokey = Bukkit.getPlayer("SmokeyDreams");
 		if (Smokey != null) {
 			Smokey.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 999999, 2, false, false, false));
-			Bukkit.broadcastMessage("Succesfully gave power to SmokeyDreams!");
 			NeedApplySmokeyLore = false;
 		} else {
-			Bukkit.broadcastMessage("SmokeyDreams is not online. Will apply power when they join!");
 			NeedApplySmokeyLore = true;
 		}
 		return;
@@ -322,10 +321,8 @@ public class Main extends JavaPlugin implements Listener {
 		Player Smokey = Bukkit.getPlayer("SmokeyDreams");
 		if (Smokey != null) {
 			Smokey.removePotionEffect(PotionEffectType.JUMP);
-			Bukkit.broadcastMessage("Succesfully removed SmokeyDreams's power!");
 			NeedRemoveSmokeyLore = false;
 		} else {
-			Bukkit.broadcastMessage("SmokeyDreams is not online. Will remove power when they join!");
 			NeedRemoveSmokeyLore = true;
 		}
 		return;
@@ -432,10 +429,8 @@ public class Main extends JavaPlugin implements Listener {
 			Badflar.showPlayer(this, Badflar);
 			Badflar.spigot().setCollidesWithEntities(false);
 			
-			Bukkit.broadcastMessage("Successfully removed Badflar's power!");
 			NeedRemoveBadflarLore = false;
 		} else if (Badflar == null && BadflarMorph != null) {
-			Bukkit.broadcastMessage("Badflar is not online. Will rmove power when they join!");
 			NeedRemoveBadflarLore = true;
 		}
 		
