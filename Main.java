@@ -1,4 +1,4 @@
-package com.badflar.BSMPLore.BSMPLore;
+package com.badflar.BSMP.bsmplore;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +11,6 @@ import org.bukkit.Effect;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -39,7 +38,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.iwebpp.crypto.TweetNaclFast.poly1305;
+
 
 public class Main extends JavaPlugin implements Listener {
 	
@@ -99,16 +98,6 @@ public class Main extends JavaPlugin implements Listener {
 			}
 		}
 		
-		if (cmd.getName().equalsIgnoreCase("getstaff")) {
-			ItemStack SoRCreate = new ItemStack(Material.BLAZE_ROD);
-			ItemMeta meta = SoRCreate.getItemMeta();
-			
-			meta.setDisplayName("Stick of Righteousness");
-			SoRCreate.setItemMeta(meta);
-			
-			Player barr = Bukkit.getPlayer("Barrboat");
-			barr.getInventory().addItem(SoRCreate);
-		}
 		return false;
 	}
 	
@@ -242,10 +231,6 @@ public class Main extends JavaPlugin implements Listener {
 	public void onPlayerMoveEvent(PlayerMoveEvent e) {
 		
 		Player player = (Player) e.getPlayer();
-		Block block = player.getTargetBlock(null, 1);
-		Location location = block.getLocation();
-		
-		Player Joltie = Bukkit.getPlayer("DisasterJoltie");
 		Player Badflar = Bukkit.getPlayer("Badflar");
 		
 		if (LoreMode && player == Badflar && BadflarMorph != null) {
@@ -260,46 +245,6 @@ public class Main extends JavaPlugin implements Listener {
 			BadflarMorph.getLocation().setDirection(player.getLocation().getDirection());
 		}
 	
-		
-		if (player.isSprinting() && LoreMode && player == Joltie && location != null && player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() != Material.AIR) {
-			if (block.getType() == Material.AIR || block.getType() == Material.BEDROCK || block.getType() == Material.OBSIDIAN || block.getType() == Material.SUGAR_CANE || block.getType() == Material.VINE) return;
-			
-			int go = rand.nextInt(5);
-	
-			if (go == 1) {
-				float dir = (float)Math.toDegrees(Math.atan2(player.getLocation().getBlockX() - location.getX(), location.getZ() - player.getLocation().getBlockZ()));
-				float face = getClosestFace(dir);
-				
-				int BlockAdjustX = 0;	
-				int BlockAdjustY = -1;
-				int BlockAdjustZ = 0;
-				
-				
-				switch ((int) face) {
-				case 0:
-					 BlockAdjustZ = 1;
-					 break;
-				case 1:
-					BlockAdjustX = -1;
-					break;
-				case 2:
-					BlockAdjustZ = -1;
-					break;
-				case 3:
-					BlockAdjustX = 1;
-					break;
-				}
-				
-				Material teleportBlock = e.getPlayer().getWorld().getBlockAt(location.getBlockX() + BlockAdjustX, location.getBlockY() + BlockAdjustY, location.getBlockZ() + BlockAdjustZ).getType();
-				Material teleportBlock2 = e.getPlayer().getWorld().getBlockAt(location.getBlockX() + BlockAdjustX, location.getBlockY() + BlockAdjustY -1, location.getBlockZ() + BlockAdjustZ).getType();
-				
-				if (teleportBlock == Material.AIR && teleportBlock2 == Material.AIR) {
-					Location loc = new Location(e.getPlayer().getWorld(), location.getBlockX() + BlockAdjustX +.5, location.getBlockY() + BlockAdjustY +.5, location.getBlockZ() + BlockAdjustZ +.5);
-					player.playSound(player.getLocation(), Sound.ENTITY_ENDER_PEARL_THROW, 10, 3);
-					player.teleport(loc.setDirection(player.getLocation().getDirection()));
-				}
-			} 
-		}
 		
 		return;
 	}
@@ -399,20 +344,6 @@ public class Main extends JavaPlugin implements Listener {
 			player.setRemainingAir((int) Math.round(oxygenAmounts.get(player.getUniqueId())));
 		}
 	}
-	
-	// ------------------ JOLTIE -------------------- //
-	
-	public float getClosestFace(float direction) {
-	    
-		direction = direction % 360;
-		
-		if (direction < 0)
-			direction += 360;
-		
-		direction = Math.round(direction / 90);
-		
-		return direction;
-		}
 	
 	// ------------------ BADFLAR -------------------- //
 	
