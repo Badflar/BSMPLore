@@ -171,6 +171,13 @@ public class Main extends JavaPlugin implements Listener {
 	public void onPlayerInteractEntityEvent(PlayerInteractEntityEvent e) {
 		Player p = e.getPlayer();
 		Player Badflar = Bukkit.getPlayer("Badflar");
+		Player PolTV = Bukkit.getPlayer("Foxzentena");
+		
+		if (LoreMode && p == PolTV && p.getItemInHand().getType() == Material.AIR) {
+			if (e.getRightClicked().getType() == EntityType.CHICKEN) {
+				e.getRightClicked().addPassenger(PolTV);
+			}
+		}
 		
 		if (LoreMode && p == Badflar && p.isSneaking() == true) {
 			EntityType mobType = e.getRightClicked().getType();
